@@ -1,5 +1,6 @@
+import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import logo from '../data/images/logo-1.jpeg'
+import logo from '../data/images/logo-1.png'
 import SearchBar from './SearchBar'
 
 const navItems = [
@@ -39,23 +40,70 @@ const Navbar = ({ searchTerm, onSearch, cartCount }) => {
     }
   }
 
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [showSearch, setShowSearch] = useState(false)
+  const [isHeaderHidden, setIsHeaderHidden] = useState(false)
+  const lastScrollY = useRef(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      if (currentScrollY > lastScrollY.current && currentScrollY > 120) {
+        setIsHeaderHidden(true)
+      } else {
+        setIsHeaderHidden(false)
+      }
+      lastScrollY.current = currentScrollY
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <header className="navbar">
+    <header className={`navbar ${isHeaderHidden ? 'navbar-hidden' : ''}`}>
       <div className="navbar-inner">
         <div className="navbar-left">
           <Link to="/" className="brand" aria-label="JTS Beauty home">
             <img src={logo} alt="JTS Beauty logo" className="brand-image" />
             <span className="brand-text">JTS Beauty</span>
           </Link>
+          <button
+            type="button"
+            className="navbar-search-toggle"
+            aria-expanded={showSearch}
+            aria-label={showSearch ? 'Hide search' : 'Open search'}
+            onClick={() => {
+              setShowSearch((open) => !open)
+              setMenuOpen(false)
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </button>
           <SearchBar
             value={searchTerm}
             onChange={handleSearchChange}
             onKeyDown={handleSearchKeyDown}
-            className="navbar-search"
+            className={`navbar-search ${showSearch ? 'search-open' : ''}`}
           />
+          <button
+            type="button"
+            className="navbar-toggle"
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            onClick={() => {
+              setMenuOpen((open) => !open)
+              setShowSearch(false)
+            }}
+          >
+            <span className="navbar-toggle-icon" />
+          </button>
         </div>
 
-        <nav className="nav-links">
+        <nav className={`nav-links ${menuOpen ? 'nav-open' : ''}`}>
           <div className="nav-dropdown">
             <button type="button" className="nav-link nav-dropdown-trigger">
               Categories
@@ -88,15 +136,15 @@ const Navbar = ({ searchTerm, onSearch, cartCount }) => {
               ))}
             </div>
           </div>
-          <Link to="/appointment" className="nav-link">
+          <Link to="/appointment" className="nav-link" onClick={() => setMenuOpen(false)}>
             Appointment
           </Link>
-          <Link to="/cart" className="nav-link nav-cart-link">
+          <Link to="/cart" className="nav-link nav-cart-link" onClick={() => setMenuOpen(false)}>
             Cart
             {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
           </Link>
           {navItems.map((item) => (
-            <a key={item.label} href={item.href} className="nav-link">
+            <a key={item.label} href={item.href} className="nav-link" onClick={() => setMenuOpen(false)}>
               {item.label}
             </a>
           ))}

@@ -57,7 +57,7 @@ const App = () => {
 
   return (
     <div className="app-shell">
-      <Router>
+      <Router basename="/ecom">
         <Navbar
           searchTerm={searchTerm}
           onSearch={setSearchTerm}
