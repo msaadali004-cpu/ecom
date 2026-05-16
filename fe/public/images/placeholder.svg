@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="720" viewBox="0 0 1080 720" role="img" aria-labelledby="title desc">
+  <title id="title">Product image placeholder</title>
+  <desc id="desc">Placeholder image used when product photos are unavailable.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f7f7f8" />
+      <stop offset="100%" stop-color="#e8e8eb" />
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="720" fill="url(#bg)" />
+  <rect x="100" y="100" width="880" height="520" rx="40" fill="#fff" stroke="#d4d4d7" stroke-width="12" />
+  <path d="M260 380 L820 380" stroke="#c2c2c6" stroke-width="24" stroke-linecap="round" />
+  <circle cx="420" cy="280" r="40" fill="#c2c2c6" />
+  <path d="M520 200 L620 310 L760 180" fill="none" stroke="#c2c2c6" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="540" y="560" font-family="Inter, sans-serif" text-anchor="middle" fill="#8d8d98" font-size="48">Image unavailable</text>
+</svg>
